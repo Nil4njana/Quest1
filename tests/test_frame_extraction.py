@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from src.frame_extraction import (
+from src.common.frame_extraction import (
     extract_frame,
     get_video_duration,
     get_video_fps,

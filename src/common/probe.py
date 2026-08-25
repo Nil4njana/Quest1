@@ -23,3 +23,16 @@ def probe_video(video_path: str | Path) -> dict:
     )
 
     return json.loads(completed.stdout)
+
+def get_media_duration(
+    media_path: str | Path,
+) -> float:
+    """
+    Return media duration in seconds.
+    """
+
+    info = probe_video(media_path)
+
+    return float(
+        info["format"]["duration"]
+    )

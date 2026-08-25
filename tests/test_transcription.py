@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from src.transcription import (
+from src.common.transcription import (
     AudioTranscriber,
     WordTimestamp,
 )

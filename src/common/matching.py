@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import re
 from difflib import SequenceMatcher
 
-from src.transcription import WordTimestamp
+from src.common.transcription import WordTimestamp
 
 
 @dataclass(frozen=True)

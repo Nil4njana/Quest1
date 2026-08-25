@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.audio import extract_audio
+from src.common.audio import extract_audio
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]

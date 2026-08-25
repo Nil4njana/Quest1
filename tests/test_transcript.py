@@ -2,8 +2,8 @@ import json
 
 import pytest
 
-from src.transcription import WordTimestamp
-from src.transcript import (
+from src.common.transcription import WordTimestamp
+from src.common.transcript import (
     load_word_timestamps,
     save_word_timestamps,
 )

@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from src.matching import find_first_dialogue
-from src.transcript import load_word_timestamps
+from src.common.matching import find_first_dialogue
+from src.common.transcript import load_word_timestamps
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]

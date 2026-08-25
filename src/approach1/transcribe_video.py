@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from src.transcript import save_word_timestamps
-from src.transcription import AudioTranscriber
+from src.common.transcript import save_word_timestamps
+from src.common.transcription import AudioTranscriber
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]

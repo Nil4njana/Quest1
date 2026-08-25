@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from src.transcription import WordTimestamp
+from src.common.transcription import WordTimestamp
 
 
 def save_word_timestamps(

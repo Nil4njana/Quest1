@@ -1,8 +1,8 @@
-from src.matching import (
+from src.common.matching import (
     find_first_dialogue,
     normalize_text,
 )
-from src.transcription import WordTimestamp
+from src.common.transcription import WordTimestamp
 
 
 def make_words():
