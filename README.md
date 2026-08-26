@@ -4,6 +4,9 @@ A speech-based video search system that finds the **first occurrence of a spoken
 
 The system does not depend on subtitles or on-screen text. Instead, it uses **word-level speech transcription** to determine when a dialogue is spoken and maps that timestamp back to the original video to extract the corresponding frame.
 
+The system processes the video's audio using Faster-Whisper to obtain word-level timestamps, then uses normalized text matching and similarity scoring to locate the dialogue.
+It supports both full-audio transcription and progressive chunk-based transcription, allowing the first qualifying occurrence to be found and mapped back to the corresponding video frame.
+
 ---
 
 ## Problem Statement
