@@ -1,0 +1,564 @@
+================================================================================
+PROMPTS.txt - AUDIO FRAME IDENTIFIER (Quest1)
+================================================================================
+
+The prompts used to build this project, grouped by development phase and
+ordered so that each phase is complete before the next begins.
+
+Removed: conversational filler ("yes", "ok next", "lets go"), pasted terminal
+output and tracebacks, pasted code dumps, and questions asked purely to
+understand a concept. Where a prompt contained a large paste, it is summarised
+in [brackets]. Original wording is otherwise preserved.
+
+
+================================================================================
+PHASE 1 - PROBLEM FRAMING AND PROJECT PLAN
+================================================================================
+
+--------------------------------------------------------------------------------
+[01] Task setup
+--------------------------------------------------------------------------------
+[Attachments: problem statement PDF, starting src/download.py and src/probe.py]
+
+Given a video URL and a line of dialogue, find the timestamp of the first
+occurrence of that dialogue and the corresponding video frame.
+
+--------------------------------------------------------------------------------
+[02] End-to-end plan and working conventions
+--------------------------------------------------------------------------------
+ok now we have downloaded the video the audio also works as per my plan
+i wanted to next extract audio from the video then from the audio (using nlp
+speech processing libraries) find where the dialogue is said for the first time
+in the video and do a hard stop and exit and then do matching of the found with
+the given (similarity searc?) cosine similarity to tell how similar both are or
+use a dl based method nn to tell how correct our predicition is then after
+locating the text (keep track of the time stamp of each word in audio, then
+identify when exactly the first word of the dialogue was said) and using img
+processing lib extract the frame at the time stamp when the dialogue is starts
+also is it more useful to gradually keep pushing to git as we update our project?
+also first expore the current folder strucutre and understand it then we'll
+continue ok?
+we'll ismple the strucutre if needed (keep it modular) and push changes whenever
+we do one to github also do unit tests every time we create a functionality and
+keep record of it
+
+
+================================================================================
+PHASE 2 - RELIABLE VIDEO DOWNLOAD
+================================================================================
+
+--------------------------------------------------------------------------------
+[03] Diagnose truncated download
+--------------------------------------------------------------------------------
+the original video is 54min 22 sec but the downloaded video is onyl31min 9 sec
+can we fix this suggest ways?
+
+--------------------------------------------------------------------------------
+[04] Harden the downloader - retries, no silent fragment skipping
+--------------------------------------------------------------------------------
+> increase fragment retries, stop silently skipping fragments, add retry delays,
+> and use modest concurrency. Then verify the resulting duration with ffprobe.
+
+give modified code for this...which files which code should i modify
+
+--------------------------------------------------------------------------------
+[05] Evaluate an alternative downloader for a blocked host
+--------------------------------------------------------------------------------
+lets try this github code
+https://github.com/drequeary/python-video-downloader.py
+[pasted reference implementation]
+
+--------------------------------------------------------------------------------
+[06] Fix missing audio track in the merged output
+--------------------------------------------------------------------------------
+python download_video.py
+great the whoel video downloaded but i hear no audio from the mp4 ?
+
+
+================================================================================
+PHASE 3 - PROJECT STRUCTURE AND ENVIRONMENT
+================================================================================
+
+--------------------------------------------------------------------------------
+[07] Flatten the folder structure
+--------------------------------------------------------------------------------
+first see the parent strue tree is too deep
+[pasted folder tree]
+
+--------------------------------------------------------------------------------
+[08] Audit what is actually installed
+--------------------------------------------------------------------------------
+we need a requrements .txt as well...for now create it and add whatever needed
+to it
+check what all we have installed as of now...delete whatever note need keep
+whatever needed and add it to requrements
+
+--------------------------------------------------------------------------------
+[09] Create requirements.txt
+--------------------------------------------------------------------------------
+ok then create the requirements.txt, add the needed to it, also the others
+FFmpeg/FFprobe or the currently unused python-dotenv/PyYAML, python well add
+later ok
+
+
+================================================================================
+PHASE 4 - AUDIO EXTRACTION AND VERSION CONTROL
+================================================================================
+
+--------------------------------------------------------------------------------
+[10] Build audio extraction with unit tests
+--------------------------------------------------------------------------------
+ok lets move to next step which is?
+give code, testing code if needed
+then we'll push once to git ok?
+
+--------------------------------------------------------------------------------
+[11] Create the public repository
+--------------------------------------------------------------------------------
+i have updated requirements.txt
+bus as of now i havent greated any repo...i need a public repo named Quest1 and
+inside it i will push what i have now
+
+--------------------------------------------------------------------------------
+[12] First push to GitHub
+--------------------------------------------------------------------------------
+https://github.com/Nil4njana/Quest1
+now i created this in github help me push into this repo
+
+
+================================================================================
+PHASE 5 - SPEECH-TO-TEXT TRANSCRIPTION
+================================================================================
+
+--------------------------------------------------------------------------------
+[13] Fix the test clip selection
+--------------------------------------------------------------------------------
+data\audio\test_clip.wav
+no dialogue comes in first 1 min
+
+--------------------------------------------------------------------------------
+[14] Clean up the transcription module and its tests
+--------------------------------------------------------------------------------
+> Clean up src/transcription.py + fix tests/test_transcription.py, run the
+> tests, and then commit the complete ASR functionality to GitHub.
+
+yes give fixed code for these two
+
+--------------------------------------------------------------------------------
+[15] Load the Whisper model only once
+--------------------------------------------------------------------------------
+yes lets start...so now well modify the existing transcription
+.pt or create a new transcript_video.py? also lets make sure we dont load the
+model mutliple time ok? jsut once
+
+
+================================================================================
+PHASE 6 - DIALOGUE MATCHING AND FIRST OCCURRENCE
+================================================================================
+
+--------------------------------------------------------------------------------
+[16] Early-stop idea and ambiguity handling
+--------------------------------------------------------------------------------
+ok now iam transcribing the entire aduo since the pytest passes 7/7 cases
+also is there a method to keep transcribing only until we reach the end of the
+first ocurrence of the diagloge? then restunt he start timestamp of its first
+occurence to obtain the frame (after checking the similairity) if highly similar
+we can return the frame elase we can continue the search
+also later on we'll work to ensure that even though we identified correct
+occurence but ambiguous dialogue how to handle that without conitnuing the
+transciption ok ?
+
+--------------------------------------------------------------------------------
+[17] Extract the first occurrence and its frame
+--------------------------------------------------------------------------------
+yes i like both the local verification, optimisation ideas. full transciption is
+finished also what will be exacltly doing in local verification to ensure we both
+correct catch the ambiguous or uncertain conditions and reject the wrong ones
+aslo correctly? now lets first try to extract the first occurence of the
+dialogue...the start of the dialogue and try to return its that frame from the
+video...later we'll do the changes ok ?
+
+
+================================================================================
+PHASE 7 - FRAME EXTRACTION AND OUTPUT FORMAT
+================================================================================
+
+--------------------------------------------------------------------------------
+[18] Define the required output format
+--------------------------------------------------------------------------------
+ok lets go to next step give code remember we need to return:
+For example:
+
+None
+
+Timestamp : HH:MM:SS.sss
+
+Frame : <Frame number>
+
+Text : "My mind rebels at stagnation"
+
+along with the corresponding image from the video.
+
+--------------------------------------------------------------------------------
+[19] Verify the extracted frame
+--------------------------------------------------------------------------------
+[extracted frame image attached]
+check this is the first_occ.jpg
+
+
+================================================================================
+PHASE 8 - APPROACH 2: PROGRESSIVE TRANSCRIPTION
+================================================================================
+
+--------------------------------------------------------------------------------
+[20] Specify progressive transcription with a hard stop
+--------------------------------------------------------------------------------
+yes lets move onto the other method
+convert audio to text until the first occurene of the entire diaglue is
+encountered ...once it is encountered we return the time the diaglaogue frame no,
+the frame image then and there and do a hard stop
+this will be helpful when the dialogue appears in the very beginning itself so we
+save some transcription
+also since we will be testing this project on a new video, new diaglogue during
+the interview this will save some time
+
+--------------------------------------------------------------------------------
+[21] Add checkpointing and resume from a saved transcript
+--------------------------------------------------------------------------------
+also let smake sure that this transcriptuon starts from begininng only if a new
+video is given for the first time else check the already transcribed and saved
+words first then from there continue the same process and save if needed for
+future use
+so only if a video is new if transcribe from beginigin else we search what we
+already have then conitnue trasncribing from where we left off
+this approach optimises both if one video is tested many time or new video is
+tested each time
+
+--------------------------------------------------------------------------------
+[22] Keep Approach 2 in its own files
+--------------------------------------------------------------------------------
+yes alets start ...also make new files for this method so i can tell this as a
+separate approach (use old files as much as possible)
+
+--------------------------------------------------------------------------------
+[23] Request full code for every changed file
+--------------------------------------------------------------------------------
+now which all files i need to change give their code (full)
+
+--------------------------------------------------------------------------------
+[24] Validate Approach 2 on a real video
+--------------------------------------------------------------------------------
+https://youtu.be/aS4sjwPws8I
+but iam very happy to be here
+lets check this
+then for same veido lets check "small gift"
+next time we'll check "please clap"
+
+
+================================================================================
+PHASE 9 - REFACTOR INTO COMMON / APPROACH1 / APPROACH2
+================================================================================
+
+--------------------------------------------------------------------------------
+[25] Split the project into two approaches plus shared code
+--------------------------------------------------------------------------------
+great it worksssssssssssss
+now next we'll split this project into 2 ...aproch one file, 2 files and common
+files which both the appraoched can make use of
+to reduce redundancy ok ?
+
+--------------------------------------------------------------------------------
+[26] Confirm the verify step is not duplicated in Approach 2
+--------------------------------------------------------------------------------
+ok lets start (also verify step isnt happending in approach 2? )
+
+--------------------------------------------------------------------------------
+[27] Remove redundant functionality across the three packages
+--------------------------------------------------------------------------------
+my doubt is are the common files, appraoch 1, 2 files unique they donot do
+repeating functionalitiies right? if that is the case we need to rewrtie the
+redundant codes to use the common ones
+
+--------------------------------------------------------------------------------
+[28] Unify frame extraction across both approaches
+--------------------------------------------------------------------------------
+ok in which approahc 1 file are we calling frame extractor? like that can we have
+in appraoch 2 also?
+
+--------------------------------------------------------------------------------
+[29] Clean up and run the full suite before pushing
+--------------------------------------------------------------------------------
+ok is everything fine? or do we need cleanup? shall we try to test once before
+pushing?
+
+
+================================================================================
+PHASE 10 - SINGLE ENTRY POINT (main.py)
+================================================================================
+
+--------------------------------------------------------------------------------
+[30] Create main.py for interactive input
+--------------------------------------------------------------------------------
+all test cases passed now lets test with a video just one more time before pushing
+and also if possible create a main.py which i can run to give the video link,
+dialogue in the terminal itself and search instead of having to change the
+hardcoded test each time
+
+--------------------------------------------------------------------------------
+[31] Unique output names for videos and frames
+--------------------------------------------------------------------------------
+ya so the downloaded also should have a unique name each time a new cideo is
+downloaded and the frames as well
+main.py once i give the link, dialogue print the output then say the frame saved
+at like that
+
+--------------------------------------------------------------------------------
+[32] Naming scheme without video IDs
+--------------------------------------------------------------------------------
+what viedo id nothing like that just links only while saving the downloaded video
+make sure we dont overwrite for that we'll need to give names
+
+--------------------------------------------------------------------------------
+[33] main.py must only orchestrate, never implement
+--------------------------------------------------------------------------------
+see in the main.py
+for everything call the respective file ok dont write any implementation code
+inside it ok?
+
+--------------------------------------------------------------------------------
+[34] Remove the remaining duplicated logic
+--------------------------------------------------------------------------------
+ok lets do that and remove the redundant
+
+
+================================================================================
+PHASE 11 - ARTIFACT REUSE (AVOID REPEATED WORK)
+================================================================================
+
+--------------------------------------------------------------------------------
+[35] Avoid re-downloading the same video
+--------------------------------------------------------------------------------
+also downloads also is there a way to avoid mutliple downloads? for that we need
+the video id right?
+because now each time i run main.py and give the same video link we redownagind
+it with just different name
+
+--------------------------------------------------------------------------------
+[36] Reuse plan plus robustness requirement
+--------------------------------------------------------------------------------
+yes lets do this
+also we need to make sure our model runs for uncertain, ambiguous situtations as
+well like mutliple overlapping voices, accents, low, high pitched voiice, noisy
+video and anything else?
+
+--------------------------------------------------------------------------------
+[37] Sequence the two workstreams
+--------------------------------------------------------------------------------
+yes first lets do 1. First: implement artifact reuse then we'll move to
+2. Then: robustness for difficult audio
+
+--------------------------------------------------------------------------------
+[38] Checkpoint to git before robustness work
+--------------------------------------------------------------------------------
+ok now should we push before we start working on the next step..roubustness?
+
+
+================================================================================
+PHASE 12 - ROBUSTNESS AND FAILURE INVESTIGATION
+================================================================================
+
+--------------------------------------------------------------------------------
+[39] Enumerate the audio ambiguities to handle
+--------------------------------------------------------------------------------
+ok lets work on robustness now
+list all the ambiguities that might occur in a video's audio like overlapping
+speech, low, high pitch, accent, abbreviations, nosy, etc
+
+--------------------------------------------------------------------------------
+[40] Report a real matching failure
+--------------------------------------------------------------------------------
+even now the model doesnt work for the dialogue
+https://ok.ru/video/248244667877
+"look at you have soaked to the skin" despite this dialogue already present in
+the transcript (though erraneus)
+[transcript JSON excerpt showing "half-soup" where "soaked" was spoken]
+the transcription is being continued for the reamining video
+also in another video with overlapping voices the lower voice isnt recog only
+louder voice gets ranscribed
+also this model will work for really long sentences with errors here and there
+also any other possible errors to occur and give test cases i will check them to
+see whether or not they work and we will have to refien the model
+
+--------------------------------------------------------------------------------
+[41] Source test videos for each case
+--------------------------------------------------------------------------------
+give youtube video which the diaglues to test all the above mentioned test cases
+
+--------------------------------------------------------------------------------
+[42] Build a layered robustness test script
+--------------------------------------------------------------------------------
+> Start with these 10 high-value cases:
+>  1  look at you have soaked to the skin  - current real failure
+>  2  same dialogue but manually search transcript - matcher vs ASR
+>  3  15-20 word exact sentence - long sentence
+>  4  long sentence with 2-3 ASR errors - robust matching
+>  5  dialogue near 29-31 sec - chunk-boundary problem
+>  6  same dialogue appears twice - first occurrence
+>  7  very short/common phrase - false-positive risk
+>  8  loud + quiet overlapping speakers - dominant-speaker problem
+>  9  background noise + speech - noise robustness
+> 10  fast speech - speech-rate robustness
+
+write a script to test such test cases in my code
+video url i'll attach just wrtie a test script which will run adncheck all these
+to identify in which layer the error is
+URL: https://www.youtube.com/watch?v=SAx3Cq4pmLY
+
+--------------------------------------------------------------------------------
+[43] Separate the ASR error from the matcher error
+--------------------------------------------------------------------------------
+but that is from a different video ..that soaked in rain alone is from :
+https://ok.ru/video/248244667877
+but i already know the error...the dialogue is has soaked but the trancirption
+json has soup...so which layer error is that? so this error we'll navigate
+separetly lets not mix it in the above script
+
+
+================================================================================
+PHASE 13 - MATCHING EFFICIENCY IMPROVEMENT
+================================================================================
+
+--------------------------------------------------------------------------------
+[44] Propose anchored incremental matching for Approach 2
+--------------------------------------------------------------------------------
+ok now that means in approach 2 can we do something like approach one itself...
+once the transcibed words seem to match the given diagalogue either fitst word or
+fitst few words then we can try matching from that first word to the next upcoming
+words till we encounter the last word in the diagalogue (and see similairity score
+and return)..instead of matching from 0-current timestamp each time....so instead
+of searching from 0-now we start matching only if the first word of the dialogue
+is encountered and from then if the subsequent transcriptions match we keep
+checking else stop and forget and contnue till we find the target diagloge...this
+will avoid unncessary total matching each time right...if the diaglogue occus at
+the end of the video then this approch becomes almost as same as 1 right no big
+difference?? so is ours what iam asking now or diff if it is different can we
+change?
+
+--------------------------------------------------------------------------------
+[45] Implement the change
+--------------------------------------------------------------------------------
+ok lets change the code now
+ok give the new codes, changed codes
+
+--------------------------------------------------------------------------------
+[46] Constrain the refactor - do not touch probe.py
+--------------------------------------------------------------------------------
+iam not changing probe iam keeping as is...change other places if needed
+[probe.py pasted]
+since it is a common file i dont want to change it
+
+
+================================================================================
+PHASE 14 - INTEGRATION TESTING
+================================================================================
+
+--------------------------------------------------------------------------------
+[47] Confirm transcript reuse across both approaches
+--------------------------------------------------------------------------------
+now is our approahc 2 also using the ols transcript if it exists? no matter which
+apprach it is from?
+
+--------------------------------------------------------------------------------
+[48] Write the final integration test
+--------------------------------------------------------------------------------
+now give one test script to run to check if both approaches work fine ...before
+we push this to git then we'll push to git
+
+
+================================================================================
+PHASE 15 - DOCUMENTATION AND DELIVERY
+================================================================================
+
+--------------------------------------------------------------------------------
+[49] Document the Approach 2 pipeline
+--------------------------------------------------------------------------------
+ok nnoraml test cases work fine now for this appproahc 2 give a pipeline like this
+which ic an add to my approach
+Download video -> Extract the audio (.wav) -> Transcribe entire audio to obtain
+words with their timestamp -> Find the first occurrence of the dialogue using
+sliding window -> Similarity matching score (if grater than threshold) -> Return
+start time stamp of first word -> Find the frame at that timestamp -> return
+result..give exaclty like in in horixaontal way with ->
+
+also are we calcualting matching score here? whenre and what score?
+
+--------------------------------------------------------------------------------
+[50] Produce the architecture flowchart
+--------------------------------------------------------------------------------
+[Mermaid flowchart of the full pipeline pasted]
+to this add the tech stack
+
+--------------------------------------------------------------------------------
+[51] Final requirements, environment config and run commands
+--------------------------------------------------------------------------------
+now you know how our project has changed give the updated requiremenets.txt to
+use for the full project
+aslo the envi config
+the list of commands to know to run this program in the interview
+
+--------------------------------------------------------------------------------
+[52] Write README and SYSTEM_REQUIREMENTS.md
+--------------------------------------------------------------------------------
+give a good readme for this project which ican use, system_requrements.md
+
+--------------------------------------------------------------------------------
+[53] Confirm the README section list
+--------------------------------------------------------------------------------
+> Essential Sections: Project Title, Description, Installation, Usage,
+> Contributing, License
+
+should we add all this in readme?
+[current README draft pasted]
+
+--------------------------------------------------------------------------------
+[54] Add a tech stack section
+--------------------------------------------------------------------------------
+lets add a tech stack section in radme give one
+
+--------------------------------------------------------------------------------
+[55] Installation and verification command for each prerequisite
+--------------------------------------------------------------------------------
+[prerequisites list pasted]
+here add the command to install, verify each line
+after each point add two commands with comments and give as copyable manner to
+add in my doc
+remove the quick cehcks adn after each line add its own code and give as a doc
+
+--------------------------------------------------------------------------------
+[56] One-line install commands
+--------------------------------------------------------------------------------
+give the one line installation command to run for
+- Python 3.11 (or a similarly configured environment)
+- FFmpeg and FFprobe (tools for handling video/audio)
+
+--------------------------------------------------------------------------------
+[57] Generate the user guidelines and approach document
+--------------------------------------------------------------------------------
+help me create a userguidelines now...give all instrucutrues, data needed for
+this project to create a proper detailed userguidelines enough to help even
+someone with no tech knowledge to run this
+i will give this as prompt to another lm to get the user guideline doc...you just
+give all the content realted to this project by a lm to create such a good doc...
+give as much details as possible in a downloadable file i will give it to the
+other lm as input
+aslo give another doc having all details requredt to create a detailed apprach
+file for this project with the details of our choises and why and alo errors
+faced with one method and wtich to another method also tell why we stuck with one
+particular way and not the standard or other methods to suit our requorement...
+aslo if we identified some error and thus fixed our code functionality in that
+place
+
+
+================================================================================
+END OF PROMPT LOG
+================================================================================

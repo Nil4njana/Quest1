@@ -23,7 +23,9 @@ the system identifies:
 - The corresponding video frame
 - The location where the extracted frame was saved
 
-# Tech Stack
+---
+
+## Tech Stack
 
 | Technology | Purpose |
 |---|---|
@@ -35,20 +37,60 @@ the system identifies:
 | **pytest** | Automated unit and integration testing |
 | **PowerShell** | Development and command-line execution environment |
 
-### Example
+---
 
-Input
+## Project Structure
 
 ```text
-Video:
-<video URL>
-
-Dialogue:
-My mind rebels at stagnation
-
-Choose Approach:
-1.Full transcription
-2.Progressive transcription
-Approach 1/2: 1
-
-**Output**:
+Audio Frame Identifier/
+│
+├── configs/
+│   └── Configuration files used by the project
+│
+├── data/
+│   ├── raw/
+│   │   └── Downloaded video files
+│   │
+│   ├── audio/
+│       └── Extracted WAV audio files
+│
+├── outputs/
+│   ├── frames/
+│   │   └── Frames returned by dialogue searches
+│   │
+│   ├── transcripts/
+│       └── Saved word-level transcripts
+│
+├── src/
+│   ├── approach1/
+│   │   └── Full-transcription dialogue search
+│   │
+│   ├── approach2/
+│   │   └── Progressive/incremental transcription and search
+│   │
+│   └── common/
+│       └── Shared functionality such as:
+│           ├── video downloading
+│           ├── audio extraction
+│           ├── transcription
+│           ├── text matching
+│           ├── timestamp handling
+│           └── frame extraction
+│
+├── tests/
+│   ├── test_audio.py
+│   ├── test_frame_extraction.py
+│   ├── test_matching.py
+│   ├── test_progressive_search.py
+│   ├── test_progressive_transcription.py
+│   ├── test_transcript.py
+│   └── test_transcription.py
+│
+├── main.py
+├── requirements.txt
+├── pytest.ini
+├── SYSTEM_REQUIREMENTS.md
+├── USER_GUIDELINES.md
+├── APPROACH.md
+├── PROMPTS.txt
+└── README.md
