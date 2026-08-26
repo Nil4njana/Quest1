@@ -36,10 +36,9 @@ the system identifies:
 | **PowerShell** | Development and command-line execution environment |
 
 ### Example
+Input:
 
-**Input**
 
-```text
 Video:
 <video URL>
 
@@ -51,7 +50,7 @@ Choose Approach:
 2.Progressive transcription
 Approach 1/2: 1
 
-**Output**:
+Output:
 
 Timestamp : 00:05:24.840
 Frame     : 7788
