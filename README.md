@@ -44,8 +44,6 @@ the system identifies:
 ```text
 Audio Frame Identifier/
 │
-├── configs/
-│   └── Configuration files used by the project
 │
 ├── data/
 │   ├── raw/
